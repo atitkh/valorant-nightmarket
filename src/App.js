@@ -23,7 +23,6 @@ function App() {
           setError(data.message);
         }
       });
-
   }
 
   const Logout = () => {
@@ -32,7 +31,7 @@ function App() {
 
   return (
     <div className="App">
-      {(user.username !== "") ? (
+      {(user.accessToken !== "") ? (
         <StoreList user={JSON.stringify(user)} Logout={Logout} />
       ) : (
         <LoginForm Login={Login} error={error} />
