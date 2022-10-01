@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Valorant Night Market",
+  "name": "Web App to display Valorant Night Market items",
   "icons": [
     {
       "src": "favicon.ico",
