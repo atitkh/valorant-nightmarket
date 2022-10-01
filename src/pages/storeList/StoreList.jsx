@@ -1,11 +1,11 @@
-import React, { useState, useEffect, initialArray } from 'react'
+import React, { useState, useEffect } from 'react'
 import './storeList.css'
 import { MarketItem } from '../../components'
-import axios from 'axios'
 
 function StoreList({ user, Logout }) {
   // user = JSON.parse(user)
   const [priceList, setPriceList] = useState([])
+  const [discountPercent, setDiscountPercent] = useState(0)
   const [skinIDList, setSkinIDList] = useState([])
   const [skinNameList, setSkinNameList] = useState([])
   const [skinPriceList, setSkinPriceList] = useState([])
@@ -15,7 +15,10 @@ function StoreList({ user, Logout }) {
   useEffect(() => {
     const fetchData = async () => {
       let priceArray = [];
+      let originalPriceArray = [];
       let skinIDArray = [];
+      let discountPercentArray = [];
+
       // eslint-disable-next-line react-hooks/exhaustive-deps
       user = JSON.parse(user);
       let details = {
@@ -36,15 +39,21 @@ function StoreList({ user, Logout }) {
 
       let result = await response.json();
       result.BonusStore.BonusStoreOffers.forEach((item) => {
-        for (var key in item.DiscountCosts) {
+        discountPercentArray.push(item.DiscountPercent);
+        for (let key in item.DiscountCosts) {
           priceArray.push(item.DiscountCosts[key]);
         }
-        for (var key in item.Offer.Rewards) {
+        for (let key in item.Offer.Cost) {
+          originalPriceArray.push(item.Offer.Cost[key]);
+        }
+        for (let key in item.Offer.Rewards) {
           skinIDArray.push(item.Offer.Rewards[key]['ItemID']);
         }
       });
       setPriceList(priceArray);
+      setSkinPriceList(originalPriceArray);
       setSkinIDList(skinIDArray);
+      setDiscountPercent(discountPercentArray);
     }
     fetchData();
   }, [user]);
@@ -74,7 +83,7 @@ function StoreList({ user, Logout }) {
       </div>
       <div className="storeList__body">
         {skinNameList.map((item, index) => (
-          <MarketItem key={index} name={item} price={skinPriceList[index]} image={skinImageList[index]} discountedPrice={priceList[index]} />
+          <MarketItem key={index} name={item} price={skinPriceList[index] + ' VP'} image={skinImageList[index]} discountedPrice={priceList[index] + ' VP'} discountPercent={discountPercent[index] + '%'} />
         ))}
       </div>
       <button onClick={Logout}>Logout</button>
