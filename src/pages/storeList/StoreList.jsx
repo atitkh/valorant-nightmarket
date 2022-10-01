@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, initialArray } from 'react'
 import './storeList.css'
 import { MarketItem } from '../../components'
+import axios from 'axios'
 
 function StoreList({ user, Logout }) {
-  user = JSON.parse(user)
+  // user = JSON.parse(user)
   const [priceList, setPriceList] = useState([])
   const [skinIDList, setSkinIDList] = useState([])
   const [skinNameList, setSkinNameList] = useState([])
@@ -12,41 +13,59 @@ function StoreList({ user, Logout }) {
 
   // get skin list
   useEffect(() => {
-    fetch(`https://pd.${user.region}.a.pvp.net/store/v2/storefront/${user.userID}/`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.accessToken}`,
-        'X-Riot-Entitlements-JWT': user.entitlementsToken
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        data.BonusStore.BonusStoreOffers.forEach((item) => {
-          setPriceList(item.DiscountCost)
-          setSkinIDList(item.Offer.Rewards)
-        })
-      })
-  }, [user])
+    const fetchData = async () => {
+      let priceArray = [];
+      let skinIDArray = [];
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      user = JSON.parse(user);
+      let details = {
+        user_id: user.userID,
+        access_token: user.accessToken,
+        entitlements_token: user.entitlementsToken,
+        region: user.region,
+        username: user.username
+      };
+
+      let response = await fetch("https://api.atitkharel.com.np/valorant/storefront/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(details),
+      });
+
+      let result = await response.json();
+      result.BonusStore.BonusStoreOffers.forEach((item) => {
+        for (var key in item.DiscountCosts) {
+          priceArray.push(item.DiscountCosts[key]);
+        }
+        for (var key in item.Offer.Rewards) {
+          skinIDArray.push(item.Offer.Rewards[key]['ItemID']);
+        }
+      });
+      setPriceList(priceArray);
+      setSkinIDList(skinIDArray);
+    }
+    fetchData();
+  }, [user]);
 
   //get skin info
   useEffect(() => {
-    skinIDList.forEach((item) => {
-      fetch(`https://valorant-api.com/v1/weapons/skinlevels/${item}/`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.accessToken}`,
-          'X-Riot-Entitlements-JWT': user.entitlementsToken
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setSkinNameList(data.data.displayName)
-          setSkinImageList(data.data.displayIcon)
-        })
-    })
-  }, [skinIDList, user])
+    const fetchData = async () => {
+      let imageArray = [];
+      let nameArray = [];
+
+      for (let i = 0; i < skinIDList.length; i++) {
+        let response = await fetch("https://valorant-api.com/v1/weapons/skinlevels/" + skinIDList[i]);
+        let result = await response.json();
+        imageArray.push(result.data.displayIcon);
+        nameArray.push(result.data.displayName);
+      }
+      setSkinImageList(imageArray);
+      setSkinNameList(nameArray);
+    }
+    fetchData();
+  }, [skinIDList, user]);
 
   return (
     <div className="storeList">
