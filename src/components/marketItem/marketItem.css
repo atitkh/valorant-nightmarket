@@ -14,7 +14,7 @@
 }
 
 .marketItem:hover {
-    transform: translateY(-0.5rem);
+    transform: scale(1.03);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26), 0 0.5rem 1rem rgba(0, 0, 0, 0.26);
 }
 
@@ -30,6 +30,7 @@
     height: 100%;
     object-fit: cover;
     border-radius: 0.5rem 0.5rem 0 0;
+    margin-top: 0.5rem;
 }
 
 .marketItem__info {
@@ -56,3 +57,6 @@
     text-align: center;
 }
 
+#oldPrice {
+    text-decoration: line-through;
+}

@@ -4,8 +4,11 @@ import { MarketItem } from '../../components'
 
 function StoreList({ user, Logout }) {
   user = JSON.parse(user)
-  // const [priceList, setStoreList] = useState([])
-  // const [skinIDList, setSkinIDList] = useState([])
+  const [priceList, setStoreList] = useState([])
+  const [skinIDList, setSkinIDList] = useState([])
+  const [skinNameList, setSkinNameList] = useState([])
+  const [skinPriceList, setSkinPriceList] = useState([])
+  const [skinImageList, setSkinImageList] = useState([])
 
   // useEffect(() => {
   //   fetch(`https://pd.${user.region}.a.pvp.net/store/v2/storefront/${user.userID}/`, {
@@ -27,9 +30,14 @@ function StoreList({ user, Logout }) {
 
   return (
     <div className="storeList">
-      <h1>Store List</h1>
-      <h2>Welcome {user.username}</h2>
-      <MarketItem name={'ASD'} image={'https://fpschampion.com/wp-content/uploads/2022/07/best-valorant-skins-scaled.jpg'} price={'2000'} discountedPrice={'1000'} />
+      <div className="storeList__header">
+        <h1>Store List</h1>
+      </div>
+      <div className="storeList__body">
+        {skinNameList.map((item, index) => (
+          <MarketItem key={index} name={item} price={skinPriceList[index]} image={skinImageList[index]} discountedPrice={priceList[index]} />
+        ))}
+      </div>
       <button onClick={Logout}>Logout</button>
     </div>
   )

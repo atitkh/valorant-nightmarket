@@ -9,8 +9,8 @@ function MarketItem({ name, price, image, discountedPrice }) {
       </div>
       <div className="marketItem__info">
         <h3>{name}</h3>
-        <h4>{price}</h4>
-        <h4>{discountedPrice}</h4>
+        <h4 id='oldPrice'>{price}</h4>
+        <h4 id='newPrice'>{discountedPrice}</h4>
       </div>
     </div>
   )

@@ -3,7 +3,7 @@ import { LoginForm } from './components';
 import { StoreList } from './pages';
 
 function App() {
-  const [user, setUser] = useState({username: "asd", accessToken: "", entitlementsToken: "", userID : ""});
+  const [user, setUser] = useState({username: "Atit", accessToken: "", entitlementsToken: "", userID : ""});
   const [error, setError] = useState("");
 
   const Login = details => {
