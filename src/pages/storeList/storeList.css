@@ -34,7 +34,7 @@
     grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
     grid-gap: 1rem;
     width: 100%;
-    padding: 1rem;
+    padding: 3rem 5rem;
     margin: auto;
 
     /* scroll flow */
