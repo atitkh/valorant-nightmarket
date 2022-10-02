@@ -3,7 +3,7 @@ import { LoginForm } from './components';
 import { StoreList } from './pages';
 
 function App() {
-  const [user, setUser] = useState({username: "", accessToken: "", entitlementsToken: "", userID : "", region: ""});
+  const [user, setUser] = useState({ username: "", accessToken: "", entitlementsToken: "", userID: "", region: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -32,7 +32,8 @@ function App() {
   }
 
   const Logout = () => {
-    setUser({username: "", accessToken: "", entitlementsToken: "", userID : "", region: ""});
+    setUser({ username: "", accessToken: "", entitlementsToken: "", userID: "", region: "" });
+    setLoading(false);
   }
 
   return (

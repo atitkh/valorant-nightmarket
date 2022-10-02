@@ -6,6 +6,7 @@ function StoreList({ user, Logout }) {
   // user = JSON.parse(user)
   const [priceList, setPriceList] = useState([])
   const [discountPercent, setDiscountPercent] = useState(0)
+  const [timeRemaining, setTimeRemaining] = useState(0)
   const [skinIDList, setSkinIDList] = useState([])
   const [skinNameList, setSkinNameList] = useState([])
   const [skinPriceList, setSkinPriceList] = useState([])
@@ -52,6 +53,7 @@ function StoreList({ user, Logout }) {
           skinIDArray.push(item.Offer.Rewards[key]['ItemID']);
         }
       });
+      setTimeRemaining(result.BonusStore.BonusStoreRemainingDurationInSeconds);
       setPriceList(priceArray);
       setSkinPriceList(originalPriceArray);
       setSkinIDList(skinIDArray);
@@ -86,7 +88,7 @@ function StoreList({ user, Logout }) {
       <div className="storeList__header">
         <h1>Night Market Listing</h1>
       </div>
-
+      
       {loading ? (
         <div className='storeList__loading'>
           <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
