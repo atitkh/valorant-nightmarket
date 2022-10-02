@@ -7,9 +7,7 @@ function LoginForm({ Login, error, setLoading, loading }) {
     const submitHandler = e => {
         e.preventDefault();
         setLoading(true);
-        Login(details).then(() => {
-            setLoading(false);
-        });
+        Login(details);
     }
 
   return (
