@@ -1,0 +1,15 @@
+{
+  "short_name": "Valorant Night Market",
+  "name": "Web App to display Valorant Night Market items",
+  "icons": [
+    {
+      "src": "logo.jpg",
+      "type": "image/png",
+      "sizes": "325x260"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
