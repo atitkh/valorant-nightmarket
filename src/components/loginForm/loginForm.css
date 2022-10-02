@@ -106,3 +106,30 @@ form .form-inner input[type="submit"]:hover {
 form .form-inner input[type="submit"]:focus {
     box-shadow: 0 0 0 2px #fa6e6e;
 }
+
+.loading {
+    display: block;
+    position: relative;
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    border-radius: 5px;
+    background: #fa6e6e;
+    cursor: pointer;
+    transition: 0.4s;
+
+    animation: loading 1s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background: #fa6e6e;
+    }
+    50% {
+        background: rgb(228, 162, 162);
+    }
+    100% {
+        background: #fa6e6e;
+    }
+}

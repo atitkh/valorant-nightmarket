@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import './loginForm.css'
 
-function LoginForm({ Login, error }) {
+function LoginForm({ Login, error, setLoading, loading }) {
     const [details, setDetails] = useState({ username: "", password: "" });
 
     const submitHandler = e => {
         e.preventDefault();
-
-        Login(details);
+        setLoading(true);
+        Login(details).then(() => {
+            setLoading(false);
+        });
     }
 
   return (
@@ -23,7 +25,8 @@ function LoginForm({ Login, error }) {
                 <label htmlFor="password">Password: </label>
                 <input type="password" name="password" id="password" onChange={e => setDetails({...details, password: e.target.value})} value={details.password}/>
             </div>
-            <input type="submit" value="LOGIN" />
+            {/* add loading when pressed login until response is received */}
+            {loading ? <div className='loading' ><p>Please Wait</p></div> : <input type="submit" value="LOGIN" />} 
         </div>
     </form>
   )
