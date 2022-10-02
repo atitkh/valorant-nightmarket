@@ -11,6 +11,8 @@ function StoreList({ user, Logout }) {
   const [skinPriceList, setSkinPriceList] = useState([])
   const [skinImageList, setSkinImageList] = useState([])
 
+  const [loading, setLoading] = useState(true)
+
   // get skin list
   useEffect(() => {
     const fetchData = async () => {
@@ -74,6 +76,9 @@ function StoreList({ user, Logout }) {
       setSkinNameList(nameArray);
     }
     fetchData();
+    if (skinIDList.length > 0) {
+      setLoading(false);
+    }
   }, [skinIDList, user]);
 
   return (
@@ -81,11 +86,18 @@ function StoreList({ user, Logout }) {
       <div className="storeList__header">
         <h1>Night Market Listing</h1>
       </div>
-      <div className="storeList__body">
-        {skinNameList.map((item, index) => (
-          <MarketItem key={index} name={item} price={skinPriceList[index] + ' VP'} image={skinImageList[index]} discountedPrice={priceList[index] + ' VP'} discountPercent={discountPercent[index] + '%'} />
-        ))}
-      </div>
+
+      {loading ? (
+        <div className='storeList__loading'>
+          <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div>
+      ) : (
+        <div className="storeList__body">
+          {skinNameList.map((item, index) => (
+            <MarketItem key={index} name={item} price={skinPriceList[index] + ' VP'} image={skinImageList[index]} discountedPrice={priceList[index] + ' VP'} discountPercent={discountPercent[index] + '%'} />
+          ))}
+        </div>
+      )}
       <button onClick={Logout}>Logout</button>
     </div>
   )
