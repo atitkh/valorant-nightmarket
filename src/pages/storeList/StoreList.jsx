@@ -7,6 +7,9 @@ function StoreList({ user, Logout }) {
   const [priceList, setPriceList] = useState([])
   const [discountPercent, setDiscountPercent] = useState(0)
   const [timeRemaining, setTimeRemaining] = useState(0)
+  const [wallet, setWallet] = useState(0)
+  const [walletKeys, setWalletKeys] = useState([])
+  const [walletImages, setWalletImages] = useState([])
   const [skinIDList, setSkinIDList] = useState([])
   const [skinNameList, setSkinNameList] = useState([])
   const [skinPriceList, setSkinPriceList] = useState([])
@@ -83,10 +86,72 @@ function StoreList({ user, Logout }) {
     }
   }, [skinIDList, user]);
 
+  //get wallet
+  useEffect(() => {
+    const fetchData = async () => {
+      let wallet = {};
+      let details = {
+        user_id: user.userID,
+        access_token: user.accessToken,
+        entitlements_token: user.entitlementsToken,
+        region: user.region,
+        username: user.username
+      };
+
+      let response = await fetch("https://api.atitkharel.com.np/valorant/wallet/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(details),
+      });
+
+      let result = await response.json();
+
+      let keys = Object.keys(result.Balances);
+      let images = [];
+
+      let response2 = await fetch(`https://valorant-api.com/v1/currencies/${keys[0]}`);
+      let result2 = await response2.json();
+      wallet[result2.data.displayName] = result.Balances[keys[0]];
+      keys[0] = result2.data.displayName;
+      images.push(result2.data.displayIcon);
+
+      let response3 = await fetch(`https://valorant-api.com/v1/currencies/${keys[1]}`);
+      let result3 = await response3.json();
+      wallet[result3.data.displayName] = result.Balances[keys[1]];
+      keys[1] = result3.data.displayName;
+      images.push(result3.data.displayIcon);
+
+      let response4 = await fetch(`https://valorant-api.com/v1/currencies/${keys[2]}`);
+      let result4 = await response4.json();
+      wallet[result4.data.displayName] = result.Balances[keys[2]];  
+      keys[2] = result4.data.displayName;
+      images.push(result4.data.displayIcon);
+
+      setWallet(wallet);
+      setWalletKeys(keys);
+      setWalletImages(images);
+    }
+    fetchData();
+  }, [user]);
+
   return (
     <div className="storeList">
       <div className="storeList__header">
         <h1>Night Market Listing</h1>
+      </div>
+      <div className="storeList__wallet">
+        <div className="storeList__wallet__content">
+          {walletKeys.map((key, index) => (
+            (index < 2) ? (
+            <div className="storeList__wallet__content__item" key={index}>
+              <img src={walletImages[index]} alt={key} />
+              <h4>{wallet[key]}</h4>
+            </div>
+            ) : null 
+          ))}
+        </div>
       </div>
       
       {loading ? (
