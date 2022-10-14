@@ -128,6 +128,20 @@
     display: none;
 }
 
+.storeList__body__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.storeList__body__empty h1 {
+    font-size: 2rem;
+    color: rgb(206, 64, 64);
+}
+
 .storeList__loading {
     display: flex;
     flex-direction: column;

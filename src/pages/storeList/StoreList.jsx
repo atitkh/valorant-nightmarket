@@ -44,23 +44,29 @@ function StoreList({ user, Logout }) {
       });
 
       let result = await response.json();
-      result.BonusStore.BonusStoreOffers.forEach((item) => {
-        discountPercentArray.push(item.DiscountPercent);
-        for (let key in item.DiscountCosts) {
-          priceArray.push(item.DiscountCosts[key]);
-        }
-        for (let key in item.Offer.Cost) {
-          originalPriceArray.push(item.Offer.Cost[key]);
-        }
-        for (let key in item.Offer.Rewards) {
-          skinIDArray.push(item.Offer.Rewards[key]['ItemID']);
-        }
-      });
-      setTimeRemaining(result.BonusStore.BonusStoreRemainingDurationInSeconds);
-      setPriceList(priceArray);
-      setSkinPriceList(originalPriceArray);
-      setSkinIDList(skinIDArray);
-      setDiscountPercent(discountPercentArray);
+      if(result.BonusStore){
+        result.BonusStore.BonusStoreOffers.forEach((item) => {
+          discountPercentArray.push(item.DiscountPercent);
+          for (let key in item.DiscountCosts) {
+            priceArray.push(item.DiscountCosts[key]);
+          }
+          for (let key in item.Offer.Cost) {
+            originalPriceArray.push(item.Offer.Cost[key]);
+          }
+          for (let key in item.Offer.Rewards) {
+            skinIDArray.push(item.Offer.Rewards[key]['ItemID']);
+          }
+        });
+        setTimeRemaining(result.BonusStore.BonusStoreRemainingDurationInSeconds);
+        setPriceList(priceArray);
+        setSkinPriceList(originalPriceArray);
+        setSkinIDList(skinIDArray);
+        setDiscountPercent(discountPercentArray);
+      }
+      else{
+        setTimeRemaining(0);
+        setLoading(false);
+      }
     }
     fetchData();
   }, [user]);
@@ -160,9 +166,13 @@ function StoreList({ user, Logout }) {
         </div>
       ) : (
         <div className="storeList__body">
-          {skinNameList.map((item, index) => (
+          {timeRemaining > 0 ? skinNameList.map((item, index) => (
             <MarketItem key={index} name={item} price={skinPriceList[index] + ' VP'} image={skinImageList[index]} discountedPrice={priceList[index] + ' VP'} discountPercent={discountPercent[index] + '%'} />
-          ))}
+          )) : (
+            <div className="storeList__body__empty">
+              <h1>Night Market Has Ended.</h1>
+            </div>  
+              )}
         </div>
       )}
       <button onClick={Logout}>Logout</button>
